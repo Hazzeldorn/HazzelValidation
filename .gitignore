@@ -1,0 +1,25 @@
+# IDE
+.idea/*
+/vendor/
+composer.lock
+.remote-sync.json
+.phpunit.result.cache
+
+
+# OS
+.DS_Store
+Thumbs.db
+__MACOSX/
+
+
+# MISC
+*.log
+/license.txt
+/readme.html
+/sitemap.xml
+/sitemap.xml.gz
+__MACOSX/
+
+
+# WIP
+/tests/Legacy/
