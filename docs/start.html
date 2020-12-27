@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>HazzelForms &ndash; Quickstart</title>
+    <!-- Meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+    <!-- FontAwesome JS -->
+    <script defer src="assets/fontawesome/js/all.js"></script>
+    <!-- Global CSS -->
+    <link rel="stylesheet" href="assets/plugins/bootstrap/css/bootstrap.min.css">
+    <!-- Plugins CSS -->
+    <link rel="stylesheet" href="assets/plugins/prism/prism.css">
+    <link rel="stylesheet" href="assets/plugins/elegant_font/css/style.css">
+
+    <!-- Theme CSS -->
+    <link id="theme-style" rel="stylesheet" href="assets/css/styles.css">
+
+</head>
+
+<body class="body-blue">
+    <div class="page-wrapper">
+        <!-- ******Header****** -->
+        <header id="header" class="header">
+            <div class="container">
+                <div class="branding">
+                    <span class="logo">
+                        <a href="index.html">
+                            HazzelValidation
+                        </a>
+                    </span>
+
+                </div><!--//branding-->
+
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                    <li class="breadcrumb-item active">Quick start</li>
+                </ol>
+
+            </div><!--//container-->
+        </header><!--//header-->
+        <div class="doc-wrapper">
+            <div class="container">
+                <div class="doc-body row">
+                    <div class="doc-content col-md-9 col-12 order-1">
+                        <div id="doc-header" class="doc-header">
+                            <h1 class="doc-title"><i class="icon fa fa-paper-plane"></i> Quick start</h1>
+                        </div><!--//doc-header-->
+                        <div class="content-inner">
+                            <section id="requirements-section" class="doc-section">
+                                <h2 class="section-title">Requirements</h2>
+                                <div class="section-block">
+                                    <p>All you need is a webserver supporting PHP Version >= 7.1.</p>
+                                </div>
+                            </section><!--//doc-section-->
+                            <section id="configuration-section" class="doc-section">
+                                <h2 class="section-title">Installation</h2>
+                                <h3 class="block-title">With composer</h3>
+                                <p>
+                                    HazzelValidation will also work with Composer in the future.
+                                    However, the library is not yet available on Packagist.
+                                </p>
+                                <h3 class="block-title">Manually</h3>
+                                <p>Simply download the HazzelValidation library,
+                                    extract the zip folder and include it anywhere in your web project.
+                                </p>
+                                <a href="https://github.com/Hazzeldorn/HazzelValidation/archive/master.zip" class="btn btn-blue" target="_blank"><i class="fas fa-download"></i> Download HazzelValidation</a>
+                                <div id="minimalist"  class="section-block">
+
+<div class="code-block">
+<pre><code class="language-php">&lt;?php
+// initialize the framework
+require_once( YOUR_APP_PATH . '/HazzelValidation/autoload.php' );
+use HazzelValidation\Validation as Validation;
+?&gt;</code></pre>
+</div><!--//code-block-->
+
+                                </div><!--//section-block-->
+                            </section><!--//doc-section-->
+
+                            <section id="example-code" class="doc-section">
+
+                                <h2 class="section-title">Code example</h2>
+
+                                <div id="example--import" class="section-block">
+                                <h3 class="block-title">Data import validation</h3>
+                                <p>Here is an example of how imported data can be checked in a few rows
+                                    using the method chaining approach.</p>
+                                <p><strong>Scenario:</strong> A CSV parser function returns an array "input" for each imported row,
+                                     which contains contact data that now needs to be checked.
+                                 </p>
+
+<div class="code-block">
+<pre><code class="language-php">&lt;?php
+require_once( YOUR_APP_PATH . '/HazzelValidation/autoload.php' );
+use HazzelValidation\Validation as Validation; // you might use an abbreviation such as 'v'
+
+// given array e.g. from csv import function
+$input = parseCSV();
+
+if(
+    // required fields
+    Validation::string()->oneOf(['male', 'female'])->check( $input['gender'] )
+    && Validation::string()->notEmpty()->check( $input['firstname'] )
+    && Validation::string()->notEmpty()->check( $input['lastname'] )
+    && Validation::string()->email()->check( $input['email'] )
+
+    // optional fields
+    && Validation::string()->optional()->check( $input['street'] )
+    && Validation::string()->optional()->check( $input['city'] )
+    && Validation::number()->optional()->length(5)->check( $input['zip_code'] )
+){
+    // data is valid -> do something
+} else {
+    // at least one field is not valid;
+}
+?&gt;</code></pre>
+</div><!--//code-block-->
+
+                        <br><br>
+
+
+                        </div><!--//section-block-->
+
+
+
+                            </section><!--//doc-section-->
+
+                        </div><!--//content-inner-->
+                    </div><!--//doc-content-->
+                    <div class="doc-sidebar col-md-3 col-12 order-0 d-none d-md-flex">
+                        <div id="doc-nav" class="doc-nav">
+
+	                            <nav id="doc-menu" class="nav doc-menu flex-column sticky">
+	                                <a class="nav-link scrollto" href="#requirements-section">Requirements</a>
+	                                <a class="nav-link scrollto" href="#configuration-section">Installation</a>
+                                    <a class="nav-link scrollto" href="#example-code">Code Example</a>
+	                            </nav><!--//doc-menu-->
+
+                        </div>
+                    </div><!--//doc-sidebar-->
+                </div><!--//doc-body-->
+            </div><!--//container-->
+        </div><!--//doc-wrapper-->
+
+    </div><!--//page-wrapper-->
+
+    <footer id="footer" class="footer text-center">
+        <div class="container">
+            <!--/* This template is free as long as you keep the footer attribution link. If you'd like to use the template without the attribution link, you can buy the commercial license via our website: themes.3rdwavemedia.com Thank you for your support. :) */-->
+            <small class="copyright">Thanks to <a href="https://themes.3rdwavemedia.com/" target="_blank" rel="noopener">Xiaoying Riley</a> for the docs template design.</small>
+
+        </div><!--//container-->
+    </footer><!--//footer-->
+
+
+    <!-- Main Javascript -->
+    <script type="text/javascript" src="assets/plugins/jquery-3.4.1.min.js"></script>
+    <script type="text/javascript" src="assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="assets/plugins/prism/prism.js"></script>
+    <script type="text/javascript" src="assets/plugins/jquery-scrollTo/jquery.scrollTo.min.js"></script>
+    <script type="text/javascript" src="assets/plugins/stickyfill/dist/stickyfill.min.js"></script>
+    <script type="text/javascript" src="assets/js/main.js"></script>
+
+</body>
+</html>

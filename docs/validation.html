@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>HazzelForms &ndash; Validation Library</title>
+    <!-- Meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+    <!-- FontAwesome JS -->
+    <script defer src="assets/fontawesome/js/all.js"></script>
+    <!-- Global CSS -->
+    <link rel="stylesheet" href="assets/plugins/bootstrap/css/bootstrap.min.css">
+    <!-- Plugins CSS -->
+    <link rel="stylesheet" href="assets/plugins/prism/prism.css">
+    <link rel="stylesheet" href="assets/plugins/elegant_font/css/style.css">
+
+    <!-- Theme CSS -->
+    <link id="theme-style" rel="stylesheet" href="assets/css/styles.css">
+
+</head>
+
+<body class="body-blue">
+    <div class="page-wrapper">
+        <!-- ******Header****** -->
+        <header id="header" class="header">
+            <div class="container">
+                <div class="branding">
+                    <span class="logo">
+                        <a href="index.html">
+                            HazzelValidation
+                        </a>
+                    </span>
+
+                </div><!--//branding-->
+
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                    <li class="breadcrumb-item active">Validation Library</li>
+                </ol>
+
+            </div><!--//container-->
+        </header><!--//header-->
+        <div class="doc-wrapper">
+            <div class="container">
+                <div class="doc-body row">
+                    <div class="doc-content col-md-9 col-12 order-1">
+                        <div id="doc-header" class="doc-header">
+                            <h1 class="doc-title"><i class="icon fa fa-shield-alt"></i> Validation Library</h1>
+                        </div><!--//doc-header-->
+                        <div class="content-inner">
+                            <section id="introduction-section" class="doc-section">
+                                <h2 class="section-title">Introduction</h2>
+                                <div class="section-block">
+                                    <p>The Validation API is designed for both &ndash; configuration arrays and method chaining:</p>
+                                </div>
+
+                                <div id="method-chaining" class="section-block">
+                                    <h3 class="block-title">Method chaining approach</h3>
+                                    <p>Validate your strings with a single line of code:</p>
+
+<div class="code-block">
+<pre><code class="language-php">&lt;?php
+require_once( YOUR_APP_PATH . '/HazzelValidation/autoload.php' );
+use HazzelValidation\Validation as Validation; // you can use an abbreviation such as 'v'
+
+if( Validation::string()->length(1, 30)->check( $userInput ) ){
+    // user input is a string with 1 to 30 characters
+}
+?&gt;</code></pre>
+</div><!--//code-block-->
+                                        </div><!--//section-block-->
+
+                                        <div id="config-arrays" class="section-block">
+                                        <h3 class="block-title">Configuration arrays</h3>
+                                        <p>If you want to create reusable validaiton configurations, use config arrays:</p>
+
+<div class="code-block">
+<pre><code class="language-php">&lt;?php
+require_once( YOUR_APP_PATH . '/HazzelValidation/autoload.php' );
+use HazzelValidation\Validation as Validation; // you can use an abbreviation such as 'v'
+
+$config = new Validation([
+    'type' => 'string',
+    'length' => [1, 30]
+]);
+
+if( $config->check( $firstInput ) && $config->check( $secondInput ) ){
+    // both variables are strings, which have between one and 30 characters
+}
+?&gt;</code></pre>
+</div><!--//code-block-->
+
+                                </div><!--//section-block-->
+
+                                        <div id="multi-validation" class="section-block">
+                                        <h3 class="block-title">Multi-Validation</h3>
+                                        <p>Use the function <code>checkAll()</code> instead of <code>check()</code> to validate multiple values in an array simultaneously:</p>
+
+<div class="code-block">
+<pre><code class="language-php">&lt;?php
+$payload = array('one@example.com', 'two@example.com', 'three@example.com');
+
+if( Validation::string()->email()->checkAll( $payload ) ){
+    // all values are valid
+}
+?&gt;</code></pre>
+</div><!--//code-block-->
+
+                                </div><!--//section-block-->
+
+                            </section><!--//doc-section-->
+
+                            <section id="validation-section" class="doc-section">
+                                <h2 class="section-title">Validation rules</h2>
+
+                                <div id="rules--data-types" class="section-block">
+                                <h3 class="block-title">Data types
+                                    <div class="type-badges">
+                                        <span class="string"></span>
+                                        <span class="number"></span>
+                                        <span class="bool"></span>
+                                        <span class="array"></span>
+                                        <span class="object"></span>
+                                    </div>
+                                </h3>
+                                <p>Use one of these functions to check the data type:</p>
+
+                                <div class="callout-block callout-info">
+                                    <div class="icon-holder">
+                                        <i class="fas fa-info-circle"></i>
+                                    </div><!--//icon-holder-->
+                                    <div class="content">
+                                        <h4 class="callout-title">Notice</h4>
+                                        <p>Empty strings and arrays are considered valid because only the
+                                            data type is checked.<br>
+                                            Please add the <a href="#rules--not-empty" class="scrollto">not empty</a> rule if you need to ensure that
+                                            there is any content.</p>
+                                        </div><!--//content-->
+                                    </div><!--//callout-block-->
+
+<div class="code-block">
+<h6>Method chain</h6>
+<pre><code class="language-php">Validation::bool()->check( $input );
+Validation::int()->check( $input );
+Validation::float()->check( $input );
+Validation::number()->check( $input ); // int or float
+Validation::string()->check( $input ); // might be emtpy
+Validation::array()->check( $input );  // might be emtpy
+Validation::object()->check( $input );
+
+Validation::create()->/* some more rules */->check( $input ); // type wildcard
+</code></pre>
+</div><!--//code-block-->
+<div class="code-block">
+<h6>Config array</h6>
+<pre><code class="language-php">Validation::create([
+    'type' => 'string' // must match the chain function names
+])->check( $input );
+</code></pre>
+</div><!--//code-block-->
+
+                        </div><!--//section-block-->
+
+                        <hr>
+
+                        <div id="rules--email" class="section-block">
+                        <h3 class="block-title">Email
+                            <div class="type-badges">
+                                <span class="string"></span>
+                            </div>
+                        </h3>
+                        <p>Input must be a valid email address.</p>
+
+                        <div class="row">
+                            <div class="col-md-6 col-12">
+<div class="code-block">
+<h6>Method chain</h6>
+<pre><code class="language-php">email()</code></pre>
+</div><!--//code-block-->
+                            </div>
+                            <div class="col-md-6 col-12">
+<div class="code-block">
+<h6>Config array</h6>
+<pre><code class="language-php">'email' => true
+</code></pre>
+</div><!--//code-block-->
+                            </div>
+                        </div>
+
+                    </div><!--//section-block-->
+
+                    <hr>
+
+                    <div id="rules--length" class="section-block">
+                    <h3 class="block-title">Length
+                        <div class="type-badges">
+                            <span class="string"></span>
+                            <span class="number"></span>
+                            <span class="array"></span>
+                            <span class="object"></span>
+                        </div>
+                    </h3>
+                    <p>The input must have a certain length.
+                    <ul>
+                        <li>Strings / Numbers: number of characters</li>
+                        <li>Arrays: number of elements</li>
+                        <li>Object: number of object vars</li>
+                    </ul>
+
+<div class="code-block">
+<h6>Method chain</h6>
+<pre><code class="language-php">length(5) // exact 5
+length(null, 5) // max 5 (lower bound = 0)
+length(5, null) // min 5 (upper bound = PHP_INT_MAX)
+length(5, 10) // between 5 and 10 (inclusive)
+</code></pre>
+</div><!--//code-block-->
+<div class="code-block">
+<h6>Config array</h6>
+<pre><code class="language-php">'length' => 5 // exact 5
+/* ... */
+'length' => [5, 15] // between 5 and 10 (inclusive)
+</code></pre>
+</div><!--//code-block-->
+
+                </div><!--//section-block -->
+
+
+                <hr>
+
+
+                            <div id="rules--not-empty" class="section-block">
+                            <h3 class="block-title">Not Empty
+                                <div class="type-badges">
+                                    <span class="string"></span>
+                                    <span class="number"></span>
+                                    <span class="array"></span>
+                                    <span class="object"></span>
+                                </div>
+                            </h3>
+                            <p>This function is very similar to the built-in
+                                <code>!empty()</code> function with the addition that strings are
+                                trimmed with <code>trim()</code> first. Thus, strings with blanks or linebreaks only area
+                            considered empty.</p>
+
+                            <div class="row">
+                                <div class="col-md-6 col-12">
+<div class="code-block">
+<h6>Method chain</h6>
+<pre><code class="language-php">notEmpty()</code></pre>
+</div><!--//code-block-->
+                                </div>
+                                <div class="col-md-6 col-12">
+<div class="code-block">
+<h6>Config array</h6>
+<pre><code class="language-php">'notEmpty' => true
+</code></pre>
+</div><!--//code-block-->
+                                </div>
+                            </div>
+
+                        </div><!--//section-block-->
+
+                        <hr>
+
+                            <div id="rules--optional" class="section-block">
+                            <h3 class="block-title">Optional
+                                <div class="type-badges">
+                                    <span class="string"></span>
+                                    <span class="number"></span>
+                                </div>
+                            </h3>
+                            <p>This rule is useful, for example, when an input must be either an <a href="#rules--email" class="scrollto">e-mail address</a> or may be empty.</p>
+
+                            <div class="row">
+                                <div class="col-md-6 col-12">
+<div class="code-block">
+<h6>Method chain</h6>
+<pre><code class="language-php">optional()</code></pre>
+</div><!--//code-block-->
+                                </div>
+                                <div class="col-md-6 col-12">
+<div class="code-block">
+<h6>Config array</h6>
+<pre><code class="language-php">'optional' => true
+</code></pre>
+</div><!--//code-block-->
+                                </div>
+                            </div>
+
+                            <div class="callout-block callout-warning">
+                                <div class="icon-holder">
+                                    <i class="fas fa-exclamation-triangle"></i>
+                                </div><!--//icon-holder-->
+                                <div class="content">
+                                    <h4 class="callout-title">Caution</h4>
+                                    <p>If the input is either an empty string or <code>null</code>, all further rules are ignored.</p>
+                                    </div><!--//content-->
+                                </div><!--//callout-block-->
+
+                        </div><!--//section-block-->
+
+                        <hr>
+
+
+
+                        <div id="rules--one-of" class="section-block">
+                        <h3 class="block-title">One of
+                            <div class="type-badges">
+                                <span class="string"></span>
+                                <span class="number"></span>
+                            </div>
+                        </h3>
+                        <p>Input must be in a given array &ndash; similar to <code>in_array()</code>.
+                        This rule is <strong>case sensitive</strong> by default.
+                        </p>
+
+<div class="code-block">
+<h6>Method chain</h6>
+<pre><code class="language-php">oneOf(['foo', 'bar'])
+oneOf(['foo', 'bar'], false)->check('FOO') // turn off case sensitivity
+</code></pre>
+</div><!--//code-block-->
+<div class="code-block">
+<h6>Config array</h6>
+<pre><code class="language-php">$givenArray = ['foo', 'bar'];
+
+'oneOf' => [$givenArray, true]   // case sensitive
+'oneOf' => [$givenArray, false]  // case insensitive
+</code></pre>
+</div><!--//code-block-->
+
+                    </div><!--//section-block -->
+
+
+                    <hr>
+
+
+                    <div id="rules--phone" class="section-block">
+                    <h3 class="block-title">Phone
+                        <div class="type-badges">
+                            <span class="string"></span>
+                            <span class="int"></span>
+                        </div>
+                    </h3>
+                    <p>Input must be a valid phone number.</p>
+
+                    <div class="callout-block callout-info">
+                        <div class="icon-holder">
+                            <i class="fas fa-info-circle"></i>
+                        </div><!--//icon-holder-->
+                        <div class="content">
+                            <h4 class="callout-title">Unsupported format?</h4>
+                            <p>You can use <a href="#rules--regex" class="scrollto">regex</a> if the phone number format of your country is not yet supported.<br>
+                                Please create an issue on <a href="https://github.com/Hazzeldorn/HazzelForms/issues" target="_blank" rel="noopener">GitHub</a> so we can support your phone format in the future.
+                            </p>
+                        </div><!--//content-->
+                    </div><!--//callout-block-->
+
+
+                    <div class="row">
+                        <div class="col-md-6 col-12">
+<div class="code-block">
+<h6>Method chain</h6>
+<pre><code class="language-php">phone()</code></pre>
+</div><!--//code-block-->
+                        </div>
+                        <div class="col-md-6 col-12">
+<div class="code-block">
+<h6>Config array</h6>
+<pre><code class="language-php">'phone' => true
+</code></pre>
+</div><!--//code-block-->
+                        </div>
+                    </div>
+
+                </div><!--//section-block-->
+
+
+                <hr>
+
+
+                        <div id="rules--regex" class="section-block">
+                        <h3 class="block-title">Regex
+                            <div class="type-badges">
+                                <span class="string"></span>
+                            </div>
+                        </h3>
+                        <p>Input must match a regular expression.</p>
+
+                        <div class="row">
+                            <div class="col-md-6 col-12">
+<div class="code-block">
+<h6>Method chain</h6>
+<pre><code class="language-php">regex('/^[a-z]+$/')</code></pre>
+</div><!--//code-block-->
+                            </div>
+                            <div class="col-md-6 col-12">
+<div class="code-block">
+<h6>Config array</h6>
+<pre><code class="language-php">'regex' => '/^[a-z]+$/'
+</code></pre>
+</div><!--//code-block-->
+                            </div>
+                        </div>
+
+                    </div><!--//section-block -->
+
+                            </section><!--//doc-section-->
+
+                        </div><!--//content-inner-->
+                    </div><!--//doc-content-->
+
+
+                    <div class="doc-sidebar col-md-3 col-12 order-0 d-none d-md-flex">
+                        <div id="doc-nav" class="doc-nav">
+
+	                            <nav id="doc-menu" class="nav doc-menu flex-column sticky">
+	                                <a class="nav-link scrollto" href="#introduction-section">Introduction</a>
+                                    <nav class="doc-sub-menu nav flex-column">
+                                        <a class="nav-link scrollto" href="#method-chaining">Method chaining</a>
+                                        <a class="nav-link scrollto" href="#config-arrays">Configuration arrays</a>
+                                        <a class="nav-link scrollto" href="#multi-validation">Multi-Validation</a>
+                                    </nav><!--//nav-->
+	                                <a class="nav-link scrollto" href="#validation-section">Rules</a>
+                                    <nav class="doc-sub-menu nav flex-column">
+                                        <a class="nav-link scrollto" href="#rules--data-types">Data Type</a>
+                                        <a class="nav-link scrollto" href="#rules--email">Email</a>
+                                        <a class="nav-link scrollto" href="#rules--length">Length</a>
+                                        <a class="nav-link scrollto" href="#rules--not-empty">Not Empty</a>
+                                        <a class="nav-link scrollto" href="#rules--optional">Optional</a>
+                                        <a class="nav-link scrollto" href="#rules--one-of">One of</a>
+                                        <a class="nav-link scrollto" href="#rules--phone">Phone</a>
+                                        <a class="nav-link scrollto" href="#rules--regex">Regex</a>
+                                    </nav><!--//nav-->
+	                            </nav><!--//doc-menu-->
+
+                        </div>
+                    </div><!--//doc-sidebar-->
+
+
+                </div><!--//doc-body-->
+            </div><!--//container-->
+        </div><!--//doc-wrapper-->
+
+    </div><!--//page-wrapper-->
+
+    <footer id="footer" class="footer text-center">
+        <div class="container">
+            <!--/* This template is free as long as you keep the footer attribution link. If you'd like to use the template without the attribution link, you can buy the commercial license via our website: themes.3rdwavemedia.com Thank you for your support. :) */-->
+            <small class="copyright">Thanks to <a href="https://themes.3rdwavemedia.com/" target="_blank" rel="noopener">Xiaoying Riley</a> for the docs template design.</small>
+        </div><!--//container-->
+    </footer><!--//footer-->
+
+
+    <!-- Main Javascript -->
+    <script type="text/javascript" src="assets/plugins/jquery-3.4.1.min.js"></script>
+    <script type="text/javascript" src="assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="assets/plugins/prism/prism.js"></script>
+    <script type="text/javascript" src="assets/plugins/jquery-scrollTo/jquery.scrollTo.min.js"></script>
+    <script type="text/javascript" src="assets/plugins/stickyfill/dist/stickyfill.min.js"></script>
+    <script type="text/javascript" src="assets/js/main.js"></script>
+
+</body>
+</html>
