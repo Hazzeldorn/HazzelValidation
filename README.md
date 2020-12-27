@@ -1,6 +1,9 @@
 # HazzelValidation
 ### A lightweight validation library for PHP
 
+[Documentation](https://hazzeldorn.github.io/HazzelValidation/)
+
+
 <br><br>
 
 
